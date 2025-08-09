@@ -1,85 +1,61 @@
-# secure-document-anonymizer
-🛡 Güvenli Belge Anonimleştirme Sistemi
-Bu proje, akademik makale yükleme ve değerlendirme sürecini güvenli, anonim ve şeffaf bir şekilde yönetmek amacıyla geliştirilmiş web tabanlı bir sistemdir.
-Yazarlar makalelerini yükleyebilir, editörler anonimleştirme işlemlerini yapabilir ve hakemler anonim olarak değerlendirme yapabilir.
+# 🛡 Güvenli Belge Anonimleştirme Sistemi
 
-🚀 Teknolojiler
-Backend: Python (Django)
+Bu proje, **akademik makale yükleme, anonimleştirme ve değerlendirme sürecini güvenli bir şekilde yönetmek** amacıyla geliştirilmiş bir **web tabanlı sistemdir**.  
+Yazarlar makalelerini yükleyebilir, editörler anonimleştirme işlemlerini yapabilir, hakemler ise anonim şekilde değerlendirme yapabilir.  
 
-Frontend: HTML, CSS, JavaScript
+🛠 **Backend:** Python-Django  
+🗄 **Veritabanı:** MySQL  
+🎨 **Frontend:** HTML, CSS, JavaScript, Bootstrap  
+🔐 **Güvenlik:** RSA, SHA-256, HTTPS  
 
-Veritabanı: MySQL
+---
 
-Şifreleme: RSA (asimetrik şifreleme), SHA-256 (hashleme)
+## 📌 Özellikler
 
-Anonimleştirme: Regex, NER (Named Entity Recognition)
+### 🖊 Yazar İşlemleri
+- Üye olmadan PDF formatında makale yükleme  
+- Geçerli e-posta ile kayıt  
+- Makale takip numarası ile durum sorgulama  
+- Editöre mesaj gönderme  
+- Revize edilmiş makale yükleme  
 
-👥 Kullanıcı Roller ve Özellikler
-🖊 Yazar
-Üye olmadan PDF formatında makale yükleyebilir.
+### 🛠 Editör (Yönetici) İşlemleri
+- Yüklenen makaleleri görüntüleme  
+- Anahtar kelimelere göre alan atama  
+- Yazar/kurum bilgilerini tespit etme (Regex, NER)  
+- Anonimleştirme ve düzenleme  
+- Hakem ataması yapma  
+- Hakem değerlendirmelerini yazara iletme  
+- Log kayıtlarını görüntüleme  
 
-Geçerli e-posta adresi girmek zorundadır.
+### 📄 Hakem (Değerlendirici) İşlemleri
+- Kendisine atanan anonimleştirilmiş makaleyi görüntüleme  
+- Değerlendirme raporu oluşturma  
+- Ek açıklama ekleme  
 
-Makale yükleme sonrası benzersiz bir makale takip numarası alır.
+---
 
-Editöre mesaj gönderebilir, değerlendirme sürecini takip edebilir.
+## 🔐 Güvenlik & Anonimlik
+- **RSA** ile güvenli veri iletimi  
+- **SHA-256** ile veri bütünlüğü kontrolü  
+- Görsellerde blur anonimleştirme  
+- Bağlam kontrollü anonimleştirme (gereksiz sansürden kaçınma)  
+- Editör tarafından hakem yorumlarının değiştirilememesi  
 
-Sonuç ve hakem geri bildirimlerini alabilir.
+---
 
-Gerekirse revize edilmiş makaleyi tekrar yükleyebilir.
+## 📂 Veritabanı Tasarımı
+Bu proje ilişkisel bir veritabanı modeline sahiptir ve **1NF, 2NF, 3NF normalizasyon kurallarına** uygundur.
 
-🛠 Editör (Yönetici)
-Tüm makaleleri görüntüleyebilir ve anahtar kelimelere göre alan ataması yapabilir.
+---
 
-Makale içerisindeki yazar/kurum bilgilerini otomatik tespit eder.
+## 🖥 Kullanıcı Arayüzü (GUI)
+- 📌 **Makale Yükleme Sayfası:** PDF yükleme, e-posta doğrulama  
+- 📋 **Durum Sorgulama Paneli:** Makale takip numarası ile durum görüntüleme  
+- 🔍 **Editör Paneli:** Anonimleştirme, hakem atama, log inceleme  
+- 📝 **Hakem Paneli:** Değerlendirme raporu oluşturma  
 
-Anonimleştirilecek bilgileri seçer ve düzenler.
-
-Anonimleştirilmiş makaleyi hakeme iletir.
-
-Hakem değerlendirmelerini alır, yazar bilgilerini geri yükleyerek sonucu yazara iletir.
-
-Log kayıtlarını inceleyebilir (yükleme tarihi, atama, değerlendirme vb.).
-
-📄 Hakem (Değerlendirici)
-Kendisine atanan anonimleştirilmiş makaleyi inceleyip değerlendirme yapar.
-
-Değerlendirmesini sisteme yükler, gerekirse ek açıklama ekler.
-
-🔐 Güvenlik ve Anonimlik
-RSA: Makale verilerinin güvenli şekilde iletilmesi için asimetrik şifreleme yöntemi.
-
-SHA-256: E-posta ve dosya bütünlüğü kontrolü için güçlü hash algoritması.
-
-Yazar adı-soyadı, iletişim bilgileri ve kurum bilgileri anonimleştirilir.
-
-Anonimleştirilmiş görüntüler bulanıklaştırılır (blur).
-
-Kurum bilgileri yalnızca bağlama göre anonimleştirilir, gereksiz sansür önlenir.
-
-Hakem, yazar bilgilerini asla göremez.
-
-Editör, hakem değerlendirmelerini değiştiremez.
-
-📌 Önemli Notlar
-Hazır yapay zeka API’leri anonimleştirme için kullanılmaz (sadece arayüz puanı alınır).
-
-“Giriş”, “İlgili Çalışmalar”, “Referanslar” ve “Teşekkür” bölümleri yazar isimleri içerdiğinden özel işlem yapılır.
-
-Her makale sadece bir hakeme atanır.
-
-Giriş kontrolü (login) yoktur; demo esnasında şifre ekranı olmayacak.
-
-🗂 Örnek İş Akışı
-Yazar makaleyi PDF formatında yükler.
-
-Sistem PDF içeriğini tarar, yazar/kurum bilgilerini tespit eder.
-
-Editör anonimleştirilecek alanları seçer.
-
-Anonimleştirilmiş makale hakeme iletilir.
-
-Hakem değerlendirme yapar ve sisteme yükler.
-
-Editör yazar bilgilerini geri yükleyerek sonucu yazara iletir.
-
+💡 **Dinamik Bileşenler:**  
+✔ **Regex & NER** – Otomatik bilgi tespiti  
+✔ **Blur Görüntü İşleme** – Yazar görsellerinin anonimleştirilmesi  
+✔ **Log Sistemi** – Tüm işlem geçmişinin kaydı  
