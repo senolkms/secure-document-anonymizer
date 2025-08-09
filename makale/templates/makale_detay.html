@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Makale Detay ve Anonimleştirme</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f8ff;
+            padding: 40px 0;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .highlight-box {
+            background-color: #fff;
+            border-left: 5px solid #0d6efd;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            border-radius: 8px;
+        }
+        .form-check-label {
+            font-size: 15px;
+        }
+        h2 {
+            margin-bottom: 25px;
+            color: #0d6efd;
+        }
+        .section-title {
+            margin-top: 30px;
+            color: #444;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🔍 Makale Detay ve Anonimleştirme</h2>
+
+    <div class="highlight-box">
+        <p><strong>📌 Takip No:</strong> {{ makale.takip_no }}</p>
+        <p><strong>✉️ Yazar:</strong> {{ makale.yazar_eposta }}</p>
+    </div>
+
+    <form method="POST" action="/anonimlestir/">
+        {% csrf_token %}
+        <input type="hidden" name="takip_no" value="{{ makale.takip_no }}">
+
+        <!-- ✅ Tümünü seç kutucukları -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="selectAllYazarlar">
+                    <label class="form-check-label fw-bold" for="selectAllYazarlar">Tüm Yazarları Seç</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="selectAllKurumlar">
+                    <label class="form-check-label fw-bold" for="selectAllKurumlar">Tüm Kurumları Seç</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="selectFoto" name="anonim_fotograflar" value="true" checked>
+                    <label class="form-check-label fw-bold" for="selectFoto">Tüm Fotoğrafları Anonimleştir</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 👤 Yazarlar -->
+        <div class="section-title">👤 Tespit Edilen Yazarlar:</div>
+        {% for yazar in yazarlar %}
+            <div class="form-check">
+                <input class="form-check-input yazar-checkbox" type="checkbox" name="anonim_yazarlar" value="{{ yazar }}" id="yazar_{{ forloop.counter }}">
+                <label class="form-check-label" for="yazar_{{ forloop.counter }}">{{ yazar }}</label>
+            </div>
+        {% empty %}
+            <p class="text-muted">Tespit edilen yazar bulunamadı.</p>
+        {% endfor %}
+
+        <!-- 🏛️ Kurumlar -->
+        <div class="section-title">🏛️ Tespit Edilen Kurumlar:</div>
+        {% for kurum in kurumlar %}
+            <div class="form-check">
+                <input class="form-check-input kurum-checkbox" type="checkbox" name="anonim_kurumlar" value="{{ kurum }}" id="kurum_{{ forloop.counter }}">
+                <label class="form-check-label" for="kurum_{{ forloop.counter }}">{{ kurum }}</label>
+            </div>
+        {% empty %}
+            <p class="text-muted">Tespit edilen kurum bulunamadı.</p>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-warning mt-4">🔒 Anonimleştir</button>
+        <a href="/editor_panel/" class="btn btn-secondary mt-4 ms-2">🔙 Editör Paneline Dön</a>
+    </form>
+</div>
+
+<script>
+    // Tüm yazarları seç
+    document.getElementById("selectAllYazarlar").addEventListener("change", function () {
+        const checkboxes = document.querySelectorAll(".yazar-checkbox");
+        checkboxes.forEach(cb => cb.checked = this.checked);
+    });
+
+    // Tüm kurumları seç
+    document.getElementById("selectAllKurumlar").addEventListener("change", function () {
+        const checkboxes = document.querySelectorAll(".kurum-checkbox");
+        checkboxes.forEach(cb => cb.checked = this.checked);
+    });
+</script>
+
+</body>
+</html>

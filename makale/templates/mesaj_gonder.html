@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editöre Mesaj Gönder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e3f2fd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 400px;
+        }
+        #sohbet_ekrani {
+            height: 250px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 10px;
+            background: #f9f9f9;
+            text-align: left;
+        }
+        .mesaj {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        .gonderen {
+            background-color: #d1e7dd;
+            align-self: flex-end;
+        }
+        .editorden {
+            background-color: #f8d7da;
+            align-self: flex-start;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>✉️ Editöre Mesaj Gönder</h2>
+
+        <!-- Sohbet Ekranı -->
+        <div id="sohbet_ekrani"></div>
+
+        <form id="mesajForm">
+            <input type="hidden" id="takip_no">
+            <div class="mb-3">
+                <label for="gonderen_eposta" class="form-label">E-posta Adresiniz</label>
+                <input type="email" class="form-control" id="gonderen_eposta" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="mesaj" class="form-label">Mesajınız</label>
+                <textarea class="form-control" id="mesaj" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Gönder</button>
+        </form>
+        <p id="sonuc" class="mt-3"></p>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById("gonderen_eposta").value = params.get("eposta");
+        document.getElementById("takip_no").value = params.get("takip_no");
+
+        function mesajlariGetir() {
+            let takip_no = document.getElementById("takip_no").value;
+            fetch(`/mesaj_gonder/api/?takip_no=${takip_no}`)
+            .then(response => response.json())
+            .then(data => {
+                let sohbetEkrani = document.getElementById("sohbet_ekrani");
+                sohbetEkrani.innerHTML = "";
+                data.mesajlar.forEach(mesaj => {
+                    let div = document.createElement("div");
+                    div.classList.add("mesaj");
+                    div.classList.add(mesaj.gonderen === document.getElementById("gonderen_eposta").value ? "gonderen" : "editorden");
+                    div.innerHTML = `<strong>${mesaj.gonderen}:</strong> ${mesaj.icerik} <br> <small>${mesaj.tarih}</small>`;
+                    sohbetEkrani.appendChild(div);
+                });
+                sohbetEkrani.scrollTop = sohbetEkrani.scrollHeight;
+            })
+            .catch(error => {
+                console.error("Sohbet geçmişi yüklenirken hata oluştu!", error);
+            });
+        }
+
+        mesajlariGetir(); // Sayfa açıldığında eski mesajları getir
+
+        document.getElementById("mesajForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let formData = new FormData();
+            formData.append("takip_no", document.getElementById("takip_no").value);
+            formData.append("gonderen_eposta", document.getElementById("gonderen_eposta").value);
+            formData.append("mesaj", document.getElementById("mesaj").value);
+
+            fetch("/mesaj_gonder/api/", {  
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.error) {
+                    mesajlariGetir(); // Mesaj gönderildikten sonra sohbeti güncelle
+                    document.getElementById("mesaj").value = ""; // Mesaj kutusunu temizle
+                }
+                document.getElementById("sonuc").innerText = data.error ? "❌ " + data.error : "✅ " + data.message;
+            })
+            .catch(error => {
+                document.getElementById("sonuc").innerText = "❌ Mesaj gönderme başarısız!";
+            });
+        });
+    </script>
+
+</body>
+</html>

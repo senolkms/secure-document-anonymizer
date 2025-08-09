@@ -1,0 +1,58 @@
+<!-- hakem_degerlendir.html -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makale Değerlendirme</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f8ff;
+            padding: 40px;
+        }
+        .container {
+            max-width: 700px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 class="mb-4 text-center">📝 Makale Değerlendirme</h3>
+
+    <p><strong>Makale PDF:</strong> <a href="/{{ makale.anonim_makale }}" target="_blank">İndir</a></p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="degerlendirme" class="form-label">Değerlendirme</label>
+            <textarea class="form-control" id="degerlendirme" name="degerlendirme" rows="4" required>{{ makale.degerlendirme }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="aciklama" class="form-label">Ek Açıklama</label>
+            <textarea class="form-control" id="aciklama" name="aciklama" rows="3">{{ makale.aciklama }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="karar" class="form-label">Değerlendirme Kararı</label>
+            <select class="form-select" id="karar" name="karar" required>
+                <option value="revizyon">Revizyon Gerekiyor</option>
+                <option value="yayınlandı">Yayınlanabilir</option>
+                <option value="reddedildi">Reddedildi</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">PDF Oluştur ve Kaydet</button>
+        <a href="/hakem_panel/" class="btn btn-secondary">Panele Dön</a>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana Sayfa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #d0e7ff, #f1f5ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h2 {
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .btn-custom {
+            width: 100%;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>📄 Makale Yönetim Sistemi</h2>
+        <p class="mb-4">Hoş geldiniz! Lütfen yapmak istediğiniz işlemi seçin.</p>
+
+        <a href="{% url 'makale:makale_yukleme_sayfasi' %}" class="btn btn-success btn-custom">📤 Makale Yükle</a>
+        <a href="{% url 'makale:makale_sorgulama_sayfasi' %}" class="btn btn-info btn-custom">🔍 Makale Sorgula</a>
+        <a href="{% url 'makale:hakem_giris' %}" class="btn btn-secondary btn-custom">👨‍⚖️ Hakem Paneli</a>
+        <a href="{% url 'makale:editor_panel' %}" class="btn btn-dark btn-custom">🛠️ Editör Paneli</a>
+    </div>
+
+</body>
+</html>

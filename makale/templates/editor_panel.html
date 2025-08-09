@@ -1,0 +1,78 @@
+<!-- editor_panel.html -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editör Paneli</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f2f6ff;
+            padding: 40px;
+        }
+        .btn {
+            margin-right: 5px;
+        }
+        .btn-decrypt {
+            background-color: #7c4dff;
+            color: white;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-done {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="mb-4">📂 Editör Paneli</h2>
+    <table class="table table-bordered table-striped">
+        <thead class="table-light">
+        <tr>
+            <th>Takip No</th>
+            <th>Yazar</th>
+            <th>Durum</th>
+            <th>İşlemler</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for makale in makaleler %}
+            <tr>
+                <td>{{ makale.takip_no }}</td>
+                <td>{{ makale.yazar_eposta }}</td>
+                <td>
+                    <span class="status-badge {% if makale.durum == 'Deşifre Edildi' %}status-done{% else %}status-pending{% endif %}">
+                        {{ makale.durum }}
+                    </span>
+                </td>
+                <td>
+                    <a href="/makale_detay/?takip_no={{ makale.takip_no }}" class="btn btn-sm btn-primary">🔎 Detay</a>
+                    <a href="/alan_atama/?takip_no={{ makale.takip_no }}" class="btn btn-sm btn-warning">📌 Alan Ata</a>
+                    <a href="/hakeme_ata/?takip_no={{ makale.takip_no }}" class="btn btn-sm btn-success">📨 Hakeme Ata</a>
+                    <a href="/desifre_et/?takip_no={{ makale.takip_no }}" class="btn btn-sm btn-decrypt">🔐 Deşifre Et</a>
+                    <a href="/editor_mesaj/?takip_no={{ makale.takip_no }}" class="btn btn-sm btn-info">💬 Sohbet</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="text-center mt-4">
+        <a href="/" class="btn btn-secondary">⬅ Ana Sayfaya Dön</a>
+    </div>
+</div>
+</body>
+</html>
